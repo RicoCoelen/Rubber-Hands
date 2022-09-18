@@ -8,7 +8,7 @@ public class NavigationScript : MonoBehaviour
     [SerializeField] public Transform desiredPosition;
     private NavMeshAgent navMeshAgent;
     private Animator animator;
-
+    [SerializeField] private bool wandering = false;
     /// <summary>
     /// Awake to assign variables locally for the fixedupdate() to use
     /// </summary>
@@ -23,10 +23,21 @@ public class NavigationScript : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
-        if (desiredPosition && navMeshAgent.enabled)
+        if (wandering == false)
         {
-            navMeshAgent.destination = desiredPosition.position;
+            if (desiredPosition && navMeshAgent.enabled)
+            {
+                navMeshAgent.destination = desiredPosition.position;
+            }
+            animator.SetFloat("Velocity", navMeshAgent.velocity.magnitude);
         }
-        animator.SetFloat("Velocity", navMeshAgent.velocity.magnitude);
+        else
+        {// keep creating new points to walk to
+            if (desiredPosition && navMeshAgent.enabled)
+            {
+                navMeshAgent.destination = desiredPosition.position;
+            }
+            animator.SetFloat("Velocity", navMeshAgent.velocity.magnitude);
+        }
     }
 }
