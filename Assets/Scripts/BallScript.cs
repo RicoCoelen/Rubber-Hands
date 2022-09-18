@@ -16,6 +16,8 @@ public class BallScript : MonoBehaviour
     [Header("Ball Variables")]
     [SerializeField] private float force = 1f;
     [SerializeField] private float attractionForce = 1f;
+    public int bounces = 0;
+
 
     private void Awake()
     {
@@ -34,6 +36,7 @@ public class BallScript : MonoBehaviour
         {
             Instantiate(feedbackThump, collision.GetContact(0).point, Quaternion.identity);
             rb.AddForce(collision.contacts[0].normal * force, ForceMode.Impulse);
+            bounces++;
         }
 
         if (collision.transform.tag == "Enviroment")
